@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lab5 - Exercise 1</title>
+  </head>
+  <body>
+    <input type="text" id="textInput" placeholder="Type something here..." />
+    <label id="textLabel"></label>
+    <button id="redButton">Red</button>
+    <button id="blueButton">Blue</button>
+    <button id="greenButton">Green</button>
+    <button id="orangeButton">Orange</button>
+    <button id="purpleButton">Purple</button>
+  </body>
+  <script type="text/javascript">
+    // input box listener
+    const textInput = document.getElementById("textInput");
+    textInput.addEventListener("keydown", async function (event) {
+      if (event.key === "Enter") {
+        chosen_id = event.target.value;
+        event.target.value = "";
+        const data = await retrieveData();
+        console.log(data);
+        let found = false;
+
+        data.forEach((person) => {
+          if (person.id === chosen_id) {
+            found = true;
+            document.getElementById(
+              "textLabel"
+            ).textContent = `ID: ${person.id}, Name: ${person.first_name}, Group: ${person.user_group}`;
+          }
+        });
+        if (!found) {
+          document.getElementById("textLabel").textContent = "no user found!";
+        }
+      }
+    });
+
+    // button listeners
+    const redButton = document.getElementById("redButton");
+    redButton.addEventListener("click", function (event) {
+      document.getElementById("textLabel").style.color = "red";
+    });
+
+    const blueButton = document.getElementById("blueButton");
+    blueButton.addEventListener("click", function (event) {
+      document.getElementById("textLabel").style.color = "blue";
+    });
+
+    const greenButton = document.getElementById("greenButton");
+    greenButton.addEventListener("click", function (event) {
+      document.getElementById("textLabel").style.color = "green";
+    });
+
+    const orangeButton = document.getElementById("orangeButton");
+    orangeButton.addEventListener("click", function (event) {
+      document.getElementById("textLabel").style.color = "orange";
+    });
+
+    const purpleButton = document.getElementById("purpleButton");
+    purpleButton.addEventListener("click", function (event) {
+      document.getElementById("textLabel").style.color = "purple";
+    });
+
+    // exercise 3
+
+    async function retrieveData() {
+      try {
+        let response = await fetch(
+          "https://67c1fbd361d8935867e4f82e.mockapi.io/users_api"
+        );
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        {
+          console.log(error);
+          return "no data";
+        }
+      }
+    }
+  </script>
+</html>
